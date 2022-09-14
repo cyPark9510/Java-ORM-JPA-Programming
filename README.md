@@ -4,7 +4,7 @@
 # 학습방법
 
 * 인터넷 강의 수강 및 교재 참고
-    - 교재: [교보문고](http://www.kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&barcode=9788960777330)
+    - 교재: [자바 ORM 표준 JPA 프로그래밍](http://www.kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&barcode=9788960777330)
         + 교재 예제 코드: [Github](https://github.com/holyeye/jpabook.git)
 
     - 인터넷 강의
