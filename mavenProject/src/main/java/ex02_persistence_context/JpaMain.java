@@ -8,7 +8,7 @@ public class JpaMain {
     public static void main(String[] args) {
         // EntityManagerFactory 생성
         // 애플리케이션 실행시 한번만 생성해서 공유해서 사용
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
 
         lifeCycleManager(emf);
 
