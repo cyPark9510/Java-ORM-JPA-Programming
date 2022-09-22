@@ -1,8 +1,8 @@
 package jpabook.jpashop.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Item {
@@ -16,6 +16,9 @@ public class Item {
     private int price;          // 가격
 
     private int stackQuantity;  // 재고수량
+
+    @ManyToMany(mappedBy = "items")
+    private List<Category> categorys = new ArrayList<>();
 
     public Long getId() {
         return id;
