@@ -20,6 +20,8 @@ public class Item {
     @ManyToMany(mappedBy = "items")
     private List<Category> categorys = new ArrayList<>();
 
+
+    //==Getter, Setter==//
     public Long getId() {
         return id;
     }
@@ -50,5 +52,13 @@ public class Item {
 
     public void setStackQuantity(int stackQuantity) {
         this.stackQuantity = stackQuantity;
+    }
+
+    public List<Category> getCategorys() {
+        return categorys;
+    }
+
+    public void setCategorys(List<Category> categorys) {
+        this.categorys = categorys;
     }
 }
