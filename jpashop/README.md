@@ -26,10 +26,10 @@
    + 대로 같은 상품도 여러 번 주문될 수 있다. 
    + 주문상품 이라는 모델을 만들어서 다대다 관계를 일다대, 다대일 관계로 풀어낸다.
 
-![image](https://user-images.githubusercontent.com/50781066/190040948-36a7b567-bf02-41ed-b8b9-503379472898.png)
+![image](https://user-images.githubusercontent.com/50781066/191732888-6aad5ac3-e0f6-4b59-b9a7-17be8c6a4359.png)
 
 ### 테이블 설계
-![image](https://user-images.githubusercontent.com/50781066/190040979-fa3210f4-d425-472c-a72f-eeb24b1e52d1.png)
+![image](https://user-images.githubusercontent.com/50781066/191733011-3a8cd926-72cd-4636-92ee-ee6390d5946a.png)
 
 ### 엔티티 설계와 매핑
-![image](https://user-images.githubusercontent.com/50781066/190041008-b6be87c5-d979-404c-b515-ad538464aea4.png)
+![image](https://user-images.githubusercontent.com/50781066/191733123-f3ab96f5-e8ac-4c0d-a9c3-ba6d8f6a1713.png)
