@@ -1,12 +1,11 @@
 package ex04_associations;
 
 import javax.persistence.*;
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Team {
+public class Ex04Team {
 
     @Id
     @GeneratedValue

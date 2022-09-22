@@ -18,7 +18,7 @@ public class Ex04Member {
 
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
-    private Team team;
+    private Ex04Team team;
 
     public Long getId() {
         return id;
@@ -36,16 +36,16 @@ public class Ex04Member {
         this.username = username;
     }
 
-    public Team getTeam() {
+    public Ex04Team getTeam() {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public void setTeam(Ex04Team team) {
         this.team = team;
     }
 
     // 연관관계 편의 메소드
-    public void changeTeam(Team team) {
+    public void changeTeam(Ex04Team team) {
         this.team = team;
 
         team.getMembers().add(this);

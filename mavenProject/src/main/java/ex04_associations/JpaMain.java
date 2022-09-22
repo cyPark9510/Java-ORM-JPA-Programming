@@ -30,7 +30,7 @@ public class JpaMain {
     }
 
     public static void unidirectional(EntityManager em) {
-        Team team = new Team();
+        Ex04Team team = new Ex04Team();
         team.setName("TeamA");
         em.persist(team);
 
@@ -43,13 +43,13 @@ public class JpaMain {
         em.clear();
 
         Ex04Member findMember = em.find(Ex04Member.class, member.getId());
-        Team findTeam = findMember.getTeam();
+        Ex04Team findTeam = findMember.getTeam();
 
         System.out.println("findTeam = " + findTeam.getName());
     }
 
     public static void bidirectional(EntityManager em) {
-        Team team = new Team();
+        Ex04Team team = new Ex04Team();
         team.setName("TeamB");
         em.persist(team);
 
@@ -61,7 +61,7 @@ public class JpaMain {
 //        em.flush();
 //        em.clear();
 
-        Team findTeam = em.find(Team.class, team.getId());
+        Ex04Team findTeam = em.find(Ex04Team.class, team.getId());
         List<Ex04Member> members = findTeam.getMembers();
 
         System.out.println("========");
