@@ -16,8 +16,7 @@ public class JpaMain {
         try {
             et.begin();
 
-            unidirectional(em);
-            bidirectional(em);
+            testSave(em);
 
             et.commit();
         } catch (Exception e) {
@@ -27,6 +26,49 @@ public class JpaMain {
         }
 
         emf.close();
+    }
+
+    public static void testSave(EntityManager em) {
+        // 팀1 저장
+        Ex04Team team1 = new Ex04Team("팀1");
+        em.persist(team1);
+
+        // 회원1 저장
+        Ex04Member member1 = new Ex04Member("회원1");
+        member1.setTeam(team1);
+        em.persist(member1);
+
+        // 회원2 저장
+        Ex04Member member2 = new Ex04Member("회원2");
+        member1.setTeam(team1);
+        em.persist(member2);
+    }
+
+    public static void queryLogicJoin(EntityManager em) {
+        String jpql = "select m from Ex04Member m join m.team t where t.name=:teamName";
+
+        List<Ex04Member> resultList = em.createQuery(jpql, Ex04Member.class)
+                .setParameter("teamName", "팀1")
+                .getResultList();
+
+        for(Ex04Member member : resultList) {
+            System.out.println("[query] member.username = " + member.getUsername());
+        }
+    }
+
+    public static void updateRelation(EntityManager em) {
+        // 새로운 팀2
+        Ex04Team team2 = new Ex04Team("팀2");
+        em.persist(team2);
+
+        // 회원1에 새로운 팀2 설정
+        Ex04Member member = em.find(Ex04Member.class, 1);
+        member.setTeam(team2);
+    }
+
+    public static void deleteRelation(EntityManager em) {
+        Ex04Member member = em.find(Ex04Member.class, 1);
+        member.setTeam(null);
     }
 
     public static void unidirectional(EntityManager em) {

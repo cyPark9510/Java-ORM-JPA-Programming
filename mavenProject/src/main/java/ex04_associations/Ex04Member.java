@@ -20,6 +20,13 @@ public class Ex04Member {
     @JoinColumn(name = "TEAM_ID")
     private Ex04Team team;
 
+    public Ex04Member() {
+    }
+
+    public Ex04Member(String username) {
+        this.username = username;
+    }
+
     public Long getId() {
         return id;
     }

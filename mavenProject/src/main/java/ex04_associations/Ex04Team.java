@@ -17,6 +17,13 @@ public class Ex04Team {
     @OneToMany(mappedBy = "team")
     private List<Ex04Member> members = new ArrayList<>();
 
+    public Ex04Team() {
+    }
+
+    public Ex04Team(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

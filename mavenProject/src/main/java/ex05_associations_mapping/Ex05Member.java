@@ -26,7 +26,7 @@ public class Ex05Member {
     private Ex05Locker locker;
 
     // 다대다 양방향
-    @OneToMany(mappedBy = "MEMBER_ID")
+    @OneToMany(mappedBy = "member")
     private List<Ex05MemberProduct> mamberProducts = new ArrayList<>();
 
     public Long getId() {
