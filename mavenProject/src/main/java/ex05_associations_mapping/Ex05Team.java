@@ -14,8 +14,8 @@ public class Ex05Team {
 
     private String name;
 
-    @OneToMany
-    @JoinColumn(name = "MEMBER_ID")
+    @OneToMany(mappedBy = "team")   // MappedBy 속성의 값은
+                                    // 연관관계의 주인인 Member.team
     private List<Ex05Member> members = new ArrayList<>();
 
     public Long getId() {

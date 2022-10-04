@@ -44,4 +44,18 @@ public class Ex05Member {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public Ex05Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Ex05Team team) {
+        // 기존 팀과 관계를 제거
+        if(this.team != null){
+            this.team.getMembers().remove(this);
+        }
+
+        this.team = team;
+        team.getMembers().add(this);
+    }
 }
