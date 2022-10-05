@@ -5,6 +5,8 @@
 ### 요구사항 분석
  - 회원은 상품을 주문할 수 있다. 
  - 주문 시 여러 종류의 상품을 선택할 수 있다.
+ - 상품의 종류는 음반, 도서, 영화가 있고 이후 더 확장될 수 있다.
+ - 모든 데이터는 등록일과 수정일이 필수다.
 
 ### 기능 목록
  - 회원 기능
@@ -26,10 +28,10 @@
    + 대로 같은 상품도 여러 번 주문될 수 있다. 
    + 주문상품 이라는 모델을 만들어서 다대다 관계를 일다대, 다대일 관계로 풀어낸다.
 
-![image](https://user-images.githubusercontent.com/50781066/191732888-6aad5ac3-e0f6-4b59-b9a7-17be8c6a4359.png)
+![image](https://user-images.githubusercontent.com/50781066/193953310-8c0b70d6-4142-4a71-aca2-e0b6e71f45ae.png)
 
 ### 테이블 설계
-![image](https://user-images.githubusercontent.com/50781066/191733011-3a8cd926-72cd-4636-92ee-ee6390d5946a.png)
+![image](https://user-images.githubusercontent.com/50781066/193953360-a21a7cc0-6c1e-4839-9dd7-5cb32ec92520.png)
 
 ### 엔티티 설계와 매핑
-![image](https://user-images.githubusercontent.com/50781066/191733123-f3ab96f5-e8ac-4c0d-a9c3-ba6d8f6a1713.png)
+![image](https://user-images.githubusercontent.com/50781066/193953339-4cc30b38-390b-4872-8d32-92700b5ff299.png)
