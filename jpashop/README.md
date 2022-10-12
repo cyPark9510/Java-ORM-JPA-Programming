@@ -34,4 +34,4 @@
 ![image](https://user-images.githubusercontent.com/50781066/193953360-a21a7cc0-6c1e-4839-9dd7-5cb32ec92520.png)
 
 ### 엔티티 설계와 매핑
-![image](https://user-images.githubusercontent.com/50781066/193953339-4cc30b38-390b-4872-8d32-92700b5ff299.png)
+![image](https://user-images.githubusercontent.com/50781066/195220761-736f8685-4cd6-4e97-94e2-655369b3b8da.png)
