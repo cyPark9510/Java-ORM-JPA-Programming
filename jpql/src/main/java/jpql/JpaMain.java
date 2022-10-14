@@ -1,6 +1,10 @@
 package jpql;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import java.util.Collection;
 import java.util.List;
 
 public class JpaMain {
@@ -14,7 +18,7 @@ public class JpaMain {
         try {
             tx.begin();
 
-            functionTest(em);
+            bulkOperationTest(em);
 
             tx.commit();
         } catch (Exception e) {
@@ -83,8 +87,10 @@ public class JpaMain {
         Member member = new Member();
         member.setUsername("member");
         member.changeTeam(team);
-
         em.persist(member);
+
+        em.flush();
+        em.clear();
 
         String innerJoinQuery = "SELECT m FROM Member m INNER JOIN m.team t";
         String outerJoinQuery = "SELECT m FROM Member m LEFT JOIN m.team t";
@@ -103,8 +109,10 @@ public class JpaMain {
         Member member = new Member();
         member.setUsername("A");
         member.changeTeam(team);
-
         em.persist(member);
+
+        em.flush();
+        em.clear();
 
         // 조인 대상 필터링
 //        String query = "SELECT m, t FROM Member m LEFT JOIN m.team t ON t.name = 'A'";
@@ -131,8 +139,10 @@ public class JpaMain {
         member.setUsername("member");
         member.setAge(20);
         member.changeTeam(team);
-
         em.persist(member);
+
+        em.flush();
+        em.clear();
 
         String query = "SELECT (SELECT AVG(m1.age) FROM Member m1) as avgAge, t FROM Member m LEFT JOIN Team t on m.username = t.name";
         List<Object[]> ages = em.createQuery(query)
@@ -153,8 +163,10 @@ public class JpaMain {
         member.setAge(20);
         member.changeTeam(team);
         member.setType(MemberType.ADMIN);
-
         em.persist(member);
+
+        em.flush();
+        em.clear();
 
         String query = "SELECT m.username, 'HELLO', TRUE FROM Member m " +
                         "WHERE m.type = :userType";
@@ -176,8 +188,10 @@ public class JpaMain {
 
         Member member = new Member();
         member.setUsername("member");
-
         em.persist(member);
+
+        em.flush();
+        em.clear();
 
         String query = "SELECT COALESCE(m.username, '이름 없는 회원') FROM Member m";
         List<String> result = em.createQuery(query, String.class)
@@ -191,13 +205,14 @@ public class JpaMain {
     private static void functionTest(EntityManager em) {
         Member member1 = new Member();
         member1.setUsername("member1");
-
         em.persist(member1);
 
         Member member2 = new Member();
         member2.setUsername("member2");
-
         em.persist(member2);
+
+        em.flush();
+        em.clear();
 
         // 표준 함수
 //        String query = "SELECT SUBSTRING(m.username, 4, 6) FROM Member m";
@@ -210,5 +225,168 @@ public class JpaMain {
         for (String s : result) {
             System.out.println("s = " + s);
         }
+    }
+
+    private static void pathExpressionTest(EntityManager em) {
+        Team team = new Team();
+        team.setName("team");
+        em.persist(team);
+
+        Member member1 = new Member();
+        member1.setUsername("member1");
+        member1.changeTeam(team);
+        em.persist(member1);
+
+        Member member2 = new Member();
+        member2.setUsername("member2");
+        member2.changeTeam(team);
+        em.persist(member2);
+
+        em.flush();
+        em.clear();
+
+        // 단일 값 연관 경로
+//        String query = "SELECT m.team.name FROM Member m";
+
+        // 컬렉션 값 연관 경로
+        String query = "SELECT t.members FROM Team t";
+        List result = em.createQuery(query, Collection.class)
+                .getResultList();
+
+        for (Object o : result) {
+            Member m = (Member) o;
+            System.out.println("Member.username = " + m.getUsername());
+        }
+    }
+
+    private static void fetchJoinTest(EntityManager em) {
+        Team teamA = new Team();
+        teamA.setName("팀A");
+        em.persist(teamA);
+
+        Team teamB = new Team();
+        teamB.setName("팀B");
+        em.persist(teamB);
+
+        Member member1 = new Member();
+        member1.setUsername("회원1");
+        member1.changeTeam(teamA);
+        em.persist(member1);
+
+        Member member2 = new Member();
+        member2.setUsername("회원2");
+        member2.changeTeam(teamA);
+        em.persist(member2);
+
+        Member member3 = new Member();
+        member3.setUsername("회원3");
+        member3.changeTeam(teamB);
+        em.persist(member3);
+
+        em.flush();
+        em.clear();
+
+        // 지연로딩 사용
+//      String query = "SELECT m FROM Member m";
+        // 회원1, 팀A(SQL)
+        // 회원2, 팀A(1차 캐시)
+        // 회원3, 팀B(SQL)
+        // 회원 N명 -> N + 1
+
+        // 페치 조인 사용
+        // 다대일 관계
+//        String query = "SELECT m FROM Member m JOIN FETCH m.team";
+//        List<Member> result = em.createQuery(query, Member.class)
+//                .getResultList();
+//
+//        for (Member member : result) {
+//            System.out.println("member = " + member.getUsername() + ", " + member.getTeam().getName());
+//        }
+
+        // 일대다 관계
+        String query = "SELECT DISTINCT t FROM Team t JOIN FETCH t.members";
+        List<Team> result = em.createQuery(query, Team.class)
+                .getResultList();
+
+        for (Team team : result) {
+            System.out.println("Team = " + team.getName() + "|Member = " + team.getMembers().size());
+
+            for (Member member : team.getMembers()) {
+                System.out.println("member -> " + member);
+            }
+        }
+    }
+
+    private static void directUseEntity(EntityManager em) {
+        Team team = new Team();
+        team.setName("team");
+        em.persist(team);
+
+        Member member1 = new Member();
+        member1.setUsername("member1");
+        member1.changeTeam(team);
+        em.persist(member1);
+
+        Member member2 = new Member();
+        member2.setUsername("member2");
+        member2.changeTeam(team);
+        em.persist(member2);
+
+        em.flush();
+        em.clear();
+
+        // 기본 키 값 사용
+//        String query = "select m from Member m where m = :member1";
+
+        // 왜래 키 값 사용
+        String query = "select m from Member m where m.team = :team";
+        List<Member> result = em.createQuery(query, Member.class)
+                .setParameter("team", member1.getTeam())
+                .getResultList();
+
+        for (Member m : result) {
+            System.out.println("member = " + m);
+        }
+    }
+
+    private static void namedQueryTest(EntityManager em) {
+        Member member = new Member();
+        member.setUsername("member");
+        em.persist(member);
+
+        em.flush();
+        em.clear();
+
+        List<Member> result = em.createNamedQuery("Member.findByUsername", Member.class)
+                .setParameter("username", member.getUsername())
+                .getResultList();
+
+        for (Member m : result) {
+            System.out.println("member = " + m);
+        }
+    }
+
+    private static void bulkOperationTest(EntityManager em) {
+        Member member1 = new Member();
+        member1.setUsername("회원1");
+        em.persist(member1);
+
+        Member member2 = new Member();
+        member2.setUsername("회원2");
+        em.persist(member2);
+
+        Member member3 = new Member();
+        member3.setUsername("회원3");
+        em.persist(member3);
+
+        int resultCount = em.createQuery("UPDATE Member m SET m.age = 20")
+                .executeUpdate();
+
+        System.out.println("resultCount = " + resultCount);
+
+        em.clear();
+
+        Member findMember = em.find(Member.class, member1.getId());
+        System.out.println("findMember = " + findMember);
     }
 }
