@@ -1,4 +1,7 @@
-package jpql;
+import jpql.Member;
+import jpql.MemberDTO;
+import jpql.MemberType;
+import jpql.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
