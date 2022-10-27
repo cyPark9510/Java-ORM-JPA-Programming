@@ -26,6 +26,12 @@ dependencies {
 
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:${version}")
 
+    // Validation 추가
+    implementation 'org.springframework.boot:spring-boot-starter-validation:2.7.5'
+
+    // Hibernae5Module 추가
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5'
+
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
@@ -35,9 +41,6 @@ dependencies {
     testImplementation("org.junit.vintage:junit-vintage-engine") {
         exclude group: "org.hamcrest", module: "hamcrest-core"
     }
-
-    // Validation 추가
-    implementation 'org.springframework.boot:spring-boot-starter-validation:2.7.5'
 }
 
 tasks.named('test') {
