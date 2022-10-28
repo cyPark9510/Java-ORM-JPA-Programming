@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
+//@BatchSize(size = 100)
 public abstract class Item {
 
     @Id
