@@ -3,18 +3,25 @@ package study.datajpa.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
+import study.datajpa.entity.Team;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
+@Rollback(value = false)
 class MemberRepositoryTest {
 
     @Autowired MemberRepository memberRepository;
+    @Autowired TeamRepository teamRepository;
 
     @Test
     public void testMember() {
@@ -57,5 +64,129 @@ class MemberRepositoryTest {
         memberRepository.delete(member2);
         long deletedCount = memberRepository.count();
         assertThat(deletedCount).isEqualTo(0);
+    }
+
+    @Test
+    public void findByUSernameAndAgeGreaterThen() {
+        // given
+        Member m1 = new Member("memberA", 10);
+        Member m2 = new Member("memberB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        // when
+        List<Member> result = memberRepository.findByUsernameAndAgeGreaterThan("memberB", 15);
+
+        // then
+        assertThat(result.get(0).getUsername()).isEqualTo("memberB");
+        assertThat(result.get(0).getAge()).isEqualTo(20);
+    }
+
+    @Test
+    public void testNamedQuery() {
+        // given
+        Member m1 = new Member("memberA", 10);
+        Member m2 = new Member("memberB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        // when
+        List<Member> result = memberRepository.findByUsername(m1.getUsername());
+        Member findMember = result.get(0);
+
+        // then
+        assertThat(findMember).isEqualTo(m1);
+    }
+
+    @Test
+    public void testQuery() {
+        // given
+        Member m1 = new Member("memberA", 10);
+        Member m2 = new Member("memberB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        // when
+        List<Member> result = memberRepository.findUser(m1.getUsername(), m1.getAge());
+        Member findMember = result.get(0);
+
+        // then
+        assertThat(findMember).isEqualTo(m1);
+    }
+
+    @Test
+    public void findUsernameList() {
+        // given
+        Member m1 = new Member("memberA", 10);
+        Member m2 = new Member("memberB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        // when
+        List<String> usernameList = memberRepository.findUsernameList();
+
+        // then
+        for (String s : usernameList) {
+            System.out.println("s = " + s);
+        }
+    }
+
+    @Test
+    public void findMemberDto() {
+        // given
+        Team team = new Team("team");
+        teamRepository.save(team);
+
+        Member member = new Member("member", 20);
+        member.changeTeam(team);
+        memberRepository.save(member);
+
+        // when
+        List<MemberDto> result = memberRepository.findMemberDto();
+        MemberDto memberDto = result.get(0);
+
+        // then
+        assertThat(memberDto.getId()).isEqualTo(member.getId());
+        assertThat(memberDto.getUsername()).isEqualTo(member.getUsername());
+        assertThat(memberDto.getTeamName()).isEqualTo(member.getTeam().getName());
+    }
+
+    @Test
+    public void findByNames() {
+        // given
+        Member m1 = new Member("memberA", 10);
+        Member m2 = new Member("memberB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        // when
+        List<Member> result = memberRepository.findByNames(Arrays.asList("memberA", "memberB"));
+
+        // then
+        for (Member member : result) {
+            System.out.println("member = " + member);
+        }
+    }
+
+    @Test()
+    public void returnType() {
+        // given
+        Member m1 = new Member("member", 10);
+        Member m2 = new Member("member", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        // when
+        List<Member> listByUsername = memberRepository.findListByUsername("m");
+        Member memberByUsername = memberRepository.findMemberByUsername("m");
+        Optional<Member> optionalByUsername = memberRepository.findOptionalByUsername("m");
+
+        // then
+        assertThat(listByUsername.size()).isEqualTo(0);
+        assertThat(memberByUsername).isNull();
+        assertThat(optionalByUsername).isEmpty();
+
+        // 결과가 하나 이상이면 예외(IncorrectResultSizeDataAccessException) 발생
+//        Optional<Member> member = memberRepository.findOptionalByUsername("member");
     }
 }
