@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @ToString(of = {"id", "name"})
 @Entity
-public class Team {
+public class Team extends JpaBaseEntity {
 
     @Id
     @GeneratedValue

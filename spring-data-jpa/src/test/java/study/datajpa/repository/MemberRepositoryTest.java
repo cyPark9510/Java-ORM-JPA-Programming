@@ -325,4 +325,18 @@ class MemberRepositoryTest {
         // when
         Member findMember = memberRepository.findLockByUsername("member1").get(0);
     }
+
+    @Test
+    public void callCustom() {
+        // given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+
+        // when
+        List<Member> result = memberRepository.findMemberCustom();
+
+        // then
+        assertThat(result.size()).isEqualTo(3);
+    }
 }
