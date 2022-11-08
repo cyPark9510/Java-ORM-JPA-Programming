@@ -417,4 +417,50 @@ class MemberRepositoryTest {
             System.out.println("teamName = " + nestedClosedProjections.getTeam().getName());
         }
     }
+
+    @Test
+    public void nativeQuery() {
+        // given
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member m1 = new Member("m1", 0, teamA);
+        Member m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        // when
+        Member result = memberRepository.findByNativeQuery("m1");
+
+        // then
+        assertThat(result.getUsername()).isEqualTo("m1");
+    }
+
+    @Test
+    public void nativeQueryProjection() {
+        // given
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member m1 = new Member("m1", 0, teamA);
+        Member m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        // when
+        Page<MemberProjection> result = memberRepository.findByNativeProjection(PageRequest.of(0, 10));
+
+        // then
+        for (MemberProjection memberProjection : result) {
+            System.out.println("member_id = " + memberProjection.getId());
+            System.out.println("username = " + memberProjection.getUsername());
+            System.out.println("teamName = " + memberProjection.getTeamName());
+        }
+    }
 }
