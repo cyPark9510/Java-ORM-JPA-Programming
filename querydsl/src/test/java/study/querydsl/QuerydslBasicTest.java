@@ -406,7 +406,7 @@ public class QuerydslBasicTest {
     }
 
     @Test
-    public void fetchJoinUser() {
+    public void fetchJoinUse() {
         // given
         em.flush();
         em.clear();
